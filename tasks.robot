@@ -25,9 +25,9 @@ Execute orders
     Open website
     Click OK button
     Download input file    ${input_url}
-    Read input file    #processes orders and creates pdfs
-    #${orders}=    read file
-    #Fill and submit the orders    ${orders}
+    #Read input file    #processes orders and creates pdfs
+    ${orders}=    read file
+    Fill and submit the orders    ${orders}
     Compress output folder
     [Teardown]    Close the browser
 
@@ -74,7 +74,8 @@ Fill and submit the order
     Input Text    address    ${order}[Address]
     Click Button    Preview
     Click Button    Order
-    Validate error
+    Wait Until Keyword Succeeds    3    1s    Click Button    Order
+    #Validate error
     Capture preview of robot    ${order}[Order number]
     Generate pdf    ${order}[Order number]
     Click Button    Order another robot
@@ -110,6 +111,7 @@ Generate pdf
 
 Compress output folder
     Archive Folder With Zip    ${OUTPUT_DIR}${/}finaldocs    finaldocs.zip
+    Remove Directory    finaldocs
 
 Close the browser
     Close Browser
