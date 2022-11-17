@@ -15,8 +15,6 @@ Library             RPA.Archive
 
 *** Variables ***
 ${finalfolder}=     ${OUTPUT_DIR}${/}finaldocs${/}
-${ordersss}
-#${url}=    Get Secret    SecretWeb
 
 
 *** Tasks ***
@@ -34,7 +32,7 @@ Execute orders
 
 *** Keywords ***
 Get input file url
-    Add heading    Resource needed
+    Add heading    Provide the url to download the orders file
     Add text input    url    placeholder=www.website.com/inputfile
     ${input_url}=    Run dialog
     Log    ${input_url}
@@ -74,7 +72,7 @@ Fill and submit the order
     Input Text    address    ${order}[Address]
     Click Button    Preview
     Click Button    Order
-    Wait Until Keyword Succeeds    3    1s    Click Button    Order
+    Wait Until Keyword Succeeds    3    0.1s    Validate error
     #Validate error
     Capture preview of robot    ${order}[Order number]
     Generate pdf    ${order}[Order number]
@@ -111,7 +109,7 @@ Generate pdf
 
 Compress output folder
     Archive Folder With Zip    ${OUTPUT_DIR}${/}finaldocs    finaldocs.zip
-    Remove Directory    finaldocs
+    Remove Directory    ${OUTPUT_DIR}${/}finaldocs    recursive=True
 
 Close the browser
     Close Browser
